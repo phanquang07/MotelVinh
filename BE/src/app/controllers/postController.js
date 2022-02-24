@@ -74,22 +74,20 @@ const postController = {
 
   // tạo bài viết
   createPost: async (req, res) => {
-    console.log("abc", req.body);
     try {
-      // const {
-      //   title,
-      //   type,
-      //   price,
-      //   vote,
-      //   area,
-      //   address,
-      //   images,
-      //   author,
-      //   phone,
-      //   description,
-      // } = req.body;
+      const {
+        title,
+        type,
+        price,
+        vote,
+        area,
+        address,
+        images,
+        author,
+        phone,
+        description,
+      } = req.body;
       
-
       const newPost = await POSTS.create({
         title,
         type,

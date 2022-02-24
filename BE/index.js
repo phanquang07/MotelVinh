@@ -1,33 +1,30 @@
-// Express
-const express = require('express')
-const app = express()
-const bodyParser = require('body-parser')
-// Route
+const express = require("express");
+const app = express();
+const cors = require("cors");
 const route = require('./src/routes/indexRoute')
-app.use(route)
+const mongoose = require("mongoose");
 
-app.use(bodyParser.urlencoded({ extended: false }))
- 
-// parse application/json
-app.use(bodyParser.json())
+app.use(cors());
+app.use(express.json({ limit: "50mb" }));
 
-const cors = require("cors")
-app.use(cors())
+async function connectDB() {
+  try {
+    let connect = await mongoose.connect(
+      "mongodb://localhost:27017/motel"
+    );
+    if (connect) {
+      console.log("Kết nối thành công !");
+    }
+  } catch (error) {
+    console.log(error);
+    process.exit();
+  }
+}
 
-// Connect DB
-const db = require('./src/config/db/connection')
-db.connect()
+connectDB();
 
-// Morgan
-const morgan = require('morgan')
-app.use(morgan('combined'))
+app.use(route);
 
-app.get('/', (req, res) => {
-  res.send('Hello World!')
-})
+const PORT = 3008;
+app.listen(PORT, () => console.log(`API server run on port: http://localhost:${PORT}/`));
 
-// Port
-const port = 3008
-app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`)
-})
