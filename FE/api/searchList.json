@@ -1,0 +1,43 @@
+{
+  "searchList": [
+    {
+      "id": 1,
+      "name": "địa điểm",
+      "subname1": "-- Địa điểm --",
+      "subname2": "Bến thủy",
+      "subname3": "Trường Thi",
+      "subname4": "Trung Đô",
+      "subname5": "Hưng Dũng",
+      "values": 1
+    },
+    {
+      "id": 2,
+      "name": "kiểu phòng",
+      "subname1": "-- Kiểu phòng --",
+      "subname2": "Khép kín",
+      "subname3": "Phòng thường",
+      "subname4": "Hộ gia đình",
+      "values": 0
+    },
+    {
+      "id": 3,
+      "name": "giá phòng",
+      "subname1": "-- Giá phòng --",
+      "subname2": "Dưới 1tr",
+      "subname3": "1tr - 1tr5",
+      "subname4": "1tr5 - 2tr",
+      "subname5": "Trên 2tr",
+      "values": 1
+    },
+    {
+      "id": 4,
+      "name": "diện tích",
+      "subname1": "-- Diện tích --",
+      "subname2": "Dưới 10m2",
+      "subname3": "10 - 15m2",
+      "subname4": "15 - 20m2",
+      "subname5": "Trên 20m2",
+      "values": 1
+    }
+  ]
+}

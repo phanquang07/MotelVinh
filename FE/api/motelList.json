@@ -1,0 +1,92 @@
+{
+  "motelList": [
+    {
+      "id": 1,
+      "thumbnails": "motel-1.jpg",
+      "title": "PHÒNG KHÉP KÍN",
+      "prices": "700 000đ",
+      "area": "14m2",
+      "address": "Bến Thủy",
+      "createAt": "20/12/2021",
+      "author": "Phan Quang",
+      "stars": "fas fa-star"
+    },
+    {
+      "id": 2,
+      "thumbnails": "motel-1.jpg",
+      "title": "PHÒNG KHÉP KÍN",
+      "prices": "700 000đ",
+      "area": "14m2",
+      "address": "Bến Thủy",
+      "createAt": "20/12/2021",
+      "author": "Phan Quang",
+      "stars": "fas fa-star"
+    },
+    {
+      "id": 3,
+      "thumbnails": "motel-1.jpg",
+      "title": "PHÒNG KHÉP KÍN",
+      "prices": "700 000đ",
+      "area": "14m2",
+      "address": "Bến Thủy",
+      "createAt": "20/12/2021",
+      "author": "Phan Quang",
+      "stars": "fas fa-star"
+    },
+    {
+      "id": 4,
+      "thumbnails": "motel-1.jpg",
+      "title": "PHÒNG KHÉP KÍN",
+      "prices": "700 000đ",
+      "area": "14m2",
+      "address": "Bến Thủy",
+      "createAt": "20/12/2021",
+      "author": "Phan Quang",
+      "stars": "fas fa-star"
+    },
+    {
+      "id": 5,
+      "thumbnails": "motel-1.jpg",
+      "title": "PHÒNG KHÉP KÍN",
+      "prices": "700 000đ",
+      "area": "14m2",
+      "address": "Bến Thủy",
+      "createAt": "20/12/2021",
+      "author": "Phan Quang",
+      "stars": "fas fa-star"
+    },
+    {
+      "id": 6,
+      "thumbnails": "motel-1.jpg",
+      "title": "PHÒNG THƯỜNG",
+      "prices": "700 000đ",
+      "area": "14m2",
+      "address": "Bến Thủy",
+      "createAt": "20/12/2021",
+      "author": "Phan Quang",
+      "stars": "fas fa-star"
+    },
+    {
+      "id": 7,
+      "thumbnails": "motel-1.jpg",
+      "title": "PHÒNG THƯỜNG",
+      "prices": "700 000đ",
+      "area": "14m2",
+      "address": "Bến Thủy",
+      "createAt": "20/12/2021",
+      "author": "Phan Quang",
+      "stars": "fas fa-star"
+    },
+    {
+      "id": 8,
+      "thumbnails": "motel-1.jpg",
+      "title": "PHÒNG THƯỜNG",
+      "prices": "700 000đ",
+      "area": "14m2",
+      "address": "Bến Thủy",
+      "createAt": "20/12/2021",
+      "author": "Phan Quang",
+      "stars": "fas fa-star"
+    }
+  ]
+}

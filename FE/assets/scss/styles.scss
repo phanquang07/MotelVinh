@@ -1,0 +1,57 @@
+@import "_variables";
+@import "_mixins";
+
+* {
+  box-sizing: inherit;
+}
+
+html {
+  font-size: 62.5%;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Roboto", sans-serif;
+  font-size: 1.4rem;
+  line-height: 2rem;
+  color: $text-color;
+  margin: 0;
+  background: $bg-color;
+}
+
+main {
+  display: block;
+}
+
+.main-layout {
+  display: block;
+}
+
+.grid {
+  max-width: 1170px;
+  display: block;
+  padding: 0;
+}
+
+.grid.wide {
+  width: 100%;
+  margin: 0 auto;
+}
+
+.mar-pad {
+  margin: 0;
+  padding: 0;
+}
+
+.list {
+  list-style: none;
+}
+
+.link {
+  text-decoration: none;
+  display: block;
+}
+
+.block {
+  display: block;
+}
