@@ -7,7 +7,7 @@ const UserController = {
     try {
       const data = req.body;
       // hash mật khẩu
-      const hashPassword = await bcrypt.hash(password, 12);
+      const hashPassword = await bcrypt.hash(data.password, 12);
       data.password = hashPassword;
       const newUser = await userModel.create(data);
       // Tạo token để truy duy trì đăng nhập
@@ -94,11 +94,11 @@ const UserController = {
         return res.status(500).send({ success: false, message: "Không có id" });
       const data = req.body;
       if (data.password) {
-        const hashPassword = await bcrypt.hash(password, 12);
+        const hashPassword = await bcrypt.hash(data.password, 12);
         data.password = hashPassword;
       }
       const rs = await userModel.findByIdAndUpdate(id, data, { new: true });
-      if (!updateUser)
+      if (!rs)
         return res
           .status(500)
           .send({ success: false, message: "Cập nhật không thành công" });
