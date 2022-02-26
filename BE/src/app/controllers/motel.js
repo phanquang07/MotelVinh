@@ -101,6 +101,18 @@ const motelCtr = {
             console.error(error)
             return res.status(500).send({success: false, message: error.message})
         }
+    },
+    update: async (req, res) => {
+        try {
+            const data = req.body
+            const id = req.params.id
+            if(!id) return res.status(500).send({success: false, message: "Không có id"})
+            const rs = await motelModel.findByIdAndUpdate(id, data, {new: true})
+            return res.send({success: true, data: rs})
+        } catch (error) {
+            console.error(error)
+            return res.status(500).send({success: false, message: error.message})
+        }
     }
 }
 

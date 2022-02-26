@@ -6,7 +6,7 @@ const mongoose = require("mongoose");
 
 app.use(cors());
 app.use(express.json({ limit: "50mb" }));
-
+app.use(route);
 async function connectDB() {
   try {
     let connect = await mongoose.connect(
@@ -23,7 +23,6 @@ async function connectDB() {
 
 connectDB();
 
-app.use(route);
 
 const PORT = 3008;
 app.listen(PORT, () => console.log(`API server run on port: http://localhost:${PORT}/`));
