@@ -13,6 +13,7 @@ const motelCtr = {
       if (req.files?.images) {
         let file = req.files.images;
         // kiểm tra xem file là array hay object để lưu
+        // Khi upload nhiều ảnh thì trả về array còn 1 ảnh thì object nên check để lưu
         if (Array.isArray(file)) {
             // Dùng promise all vì lặp qua hình ảnh để lưu vào db trả về promise
           arrImg = await Promise.all(
