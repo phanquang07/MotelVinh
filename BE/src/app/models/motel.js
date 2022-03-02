@@ -6,7 +6,7 @@ const motelSchema = new Schema({
   category: { type: Schema.Types.ObjectId, ref: "categories" },
   descriptions: String,
   author: { type: Schema.Types.ObjectId, ref: "users" },
-  image: String,
+  images: [{type: Schema.Types.ObjectId, ref: "images"}],
   view: { type: Number, default: 0 },
   approved: { type: Boolean, default: true },
   price: Number,
