@@ -1,9 +1,15 @@
+import dotenv from 'dotenv'
+dotenv.config()
+
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
     title: 'PhongTroVinh',
     htmlAttrs: {
       lang: 'en'
+    },
+    env: {
+      apiUrl: process.env.API_URL || "http://localhost:3008/api"
     },
     meta: [
       { charset: 'utf-8' },

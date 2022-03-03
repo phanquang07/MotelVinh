@@ -1,8 +1,9 @@
 <template>
   <div class="register">
     <!-- Form register -->
-    <a-form :form="form" @submit="handleSubmit">
-      <a-form-item v-bind="formItemLayout" label="E-mail">
+    <h1 style="margin-top: 20px"><strong>Đăng ký</strong></h1>
+    <a-form method="POST" :form="form" @submit="handleSubmit">
+      <a-form-item label="E-mail">
         <a-input
           placeholder="Nhập email"
           v-decorator="[
@@ -22,7 +23,8 @@
           ]"
         />
       </a-form-item>
-      <a-form-item v-bind="formItemLayout" label="Mật khẩu" has-feedback>
+      <p v-if="checkEmail" class="text-validate">Email đã tồn tại</p>
+      <a-form-item label="Mật khẩu">
         <a-input
           type="password"
           placeholder="Nhập mật khẩu"
@@ -34,19 +36,12 @@
                   required: true,
                   message: 'Hãy nhập mật khẩu của bạn!',
                 },
-                {
-                  validator: validateToNextPassword,
-                },
               ],
             },
           ]"
         />
       </a-form-item>
-      <a-form-item
-        v-bind="formItemLayout"
-        label="Nhập lại mật khẩu"
-        has-feedback
-      >
+      <a-form-item label="Nhập lại mật khẩu">
         <a-input
           type="password"
           placeholder="Nhập lại mật khẩu"
@@ -58,21 +53,18 @@
                   required: true,
                   message: 'Hãy nhập lại mật khẩu của bạn!',
                 },
-                {
-                  validator: compareToFirstPassword,
-                },
               ],
             },
           ]"
-          @blur="handleConfirmBlur"
         />
       </a-form-item>
-      <a-form-item v-bind="formItemLayout">
-        <span slot="label"> Tên đăng nhập&nbsp; </span>
+      <p v-if="checkPass" class="text-validate">Mật khẩu chưa trùng khớp</p>
+      <a-form-item>
+        <span slot="label"> Tên của bạn&nbsp; </span>
         <a-input
-          placeholder="Nhập tên đăng nhập"
+          placeholder="Nhập tên"
           v-decorator="[
-            'nickname',
+            'name',
             {
               rules: [
                 {
@@ -85,7 +77,7 @@
           ]"
         />
       </a-form-item>
-      <a-form-item v-bind="formItemLayout" label="Số điện thoại">
+      <a-form-item label="Số điện thoại">
         <a-input
           type="tel"
           placeholder="Nhập số điện thoại"
@@ -103,40 +95,7 @@
         >
         </a-input>
       </a-form-item>
-      <a-form-item
-        v-bind="formItemLayout"
-        label="Mã xác thực"
-        extra="Chúng tôi phải đảm bảo bạn không phải robot."
-      >
-        <a-row :gutter="8">
-          <a-col :lg="20">
-            <a-input
-              placeholder="Nhập mã xác thực"
-              v-decorator="[
-                'captcha',
-                {
-                  rules: [
-                    {
-                      required: true,
-                      message: 'Hãy nhập mã xác thực của bạn!',
-                    },
-                  ],
-                },
-              ]"
-            />
-          </a-col>
-          <a-col :lg="4" :md="4">
-            <a-button style="width: 100%" html-type="submit">Gửi mã</a-button>
-          </a-col>
-        </a-row>
-      </a-form-item>
-      <a-form-item v-bind="tailFormItemLayout">
-        <a-checkbox v-decorator="['agreement', { valuePropName: 'checked' }]">
-          Tôi đã đọc
-          <a href=""> Thỏa thuận người dùng </a>
-        </a-checkbox>
-      </a-form-item>
-      <a-form-item v-bind="tailFormItemLayout">
+      <a-form-item>
         <a-button type="primary" html-type="submit"> Đăng ký </a-button>
       </a-form-item>
     </a-form>
@@ -144,72 +103,66 @@
 </template>
 
 <script>
+import {mapMutations} from "vuex"
 export default {
-  layout: 'motel_base',
+  // layout: 'motel_base',
   data() {
     return {
+      checkPass: false,
+      checkEmail: false,
+      // form: null,
       // Form register, login
       confirmDirty: false,
       autoCompleteResult: [],
-      formItemLayout: {
-        labelCol: {
-          xs: { span: 24 },
-          sm: { span: 8 },
-        },
-        wrapperCol: {
-          xs: { span: 24 },
-          sm: { span: 16 },
-        },
-      },
-      tailFormItemLayout: {
-        wrapperCol: {
-          xs: {
-            span: 24,
-            offset: 0,
-          },
-          sm: {
-            span: 16,
-            offset: 8,
-          },
-        },
-      },
     };
   },
   beforeCreate() {
     this.form = this.$form.createForm(this, { name: "register" });
   },
+  mounted() {
+    // console.log(process.env.apiUrl);
+  },
   methods: {
+    ...mapMutations(["setLogin"]),
     handleSubmit(e) {
       e.preventDefault();
       this.form.validateFieldsAndScroll((err, values) => {
         if (!err) {
           console.log("Received values of form: ", values);
+          if (values.password != values.confirm) {
+            this.checkPass = true;
+            return;
+          }
+          let url = "http://localhost:3008/api/user/register";
+          this.$axios.post(url , values).then(res => {
+            if(res.data.success) {
+              localStorage.setItem('motel-token', res.data.token)
+              res.data.data.isLogin = true
+              this.setLogin(res.data.data)
+              this.$router.push('/')
+            }
+          }).catch( err => {
+            if(!err.response.data.success && err.response.data.message == "Email đã tồn tại!") {
+              this.checkEmail = true
+            }
+            console.log(err.response)
+          })
         }
       });
     },
-  },
-  handleConfirmBlur(e) {
-    const value = e.target.value;
-    this.confirmDirty = this.confirmDirty || !!value;
-  },
-  compareToFirstPassword(rule, value, callback) {
-    const form = this.form;
-    if (value && value !== form.getFieldValue("password")) {
-      callback("Two passwords that you enter is inconsistent!");
-    } else {
-      callback();
-    }
-  },
-  validateToNextPassword(rule, value, callback) {
-    const form = this.form;
-    if (value && this.confirmDirty) {
-      form.validateFields(["confirm"], { force: true });
-    }
-    callback();
-  },
+  }
 };
 </script>
 
 <style lang="scss" scoped>
-
+.register {
+  width: 70%;
+  margin: 0 auto;
+}
+.text-validate {
+  position: relative;
+  top: -25px;
+  color: #f5222d;
+  margin: 0;
+}
 </style>

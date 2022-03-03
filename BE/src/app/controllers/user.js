@@ -7,6 +7,9 @@ const UserController = {
     try {
       const data = req.body;
       // hash mật khẩu
+      const find = await userModel.findOne({email: data.email})
+      if(find) 
+        return res.status(500).send({success: false, message: "Email đã tồn tại!"})
       const hashPassword = await bcrypt.hash(data.password, 12);
       data.password = hashPassword;
       const newUser = await userModel.create(data);

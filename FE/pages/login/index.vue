@@ -1,6 +1,7 @@
 <template>
   <div class="login">
     <!-- Form login -->
+    <h1><strong>Đăng nhập</strong></h1>
     <a-form
       id="components-form-demo-normal-login"
       :form="form"
@@ -10,14 +11,19 @@
       <a-form-item>
         <a-input
           v-decorator="[
-            'userName',
+            'email',
             {
               rules: [
-                { required: true, message: 'Hãy nhập tên đăng nhập của bạn!' },
+                { required: true, message: 'Hãy nhập email của bạn!' },
+                {
+                  type: 'email',
+                  message: 'Email không hợp lệ!',
+                },
               ],
             },
           ]"
           placeholder="Tên đăng nhập"
+          type="email"
         >
           <a-icon
             slot="prefix"
@@ -70,8 +76,9 @@
 </template>
 
 <script>
+import {mapMutations} from "vuex"
 export default {
-  layout: 'motel_base',
+  // layout: 'motel_base',
   data() {
     return {};
   },
@@ -79,11 +86,26 @@ export default {
     this.form = this.$form.createForm(this, { name: "register" });
   },
   methods: {
+    ...mapMutations(["setLogin"]),
     handleSubmit(e) {
       e.preventDefault();
       this.form.validateFieldsAndScroll((err, values) => {
         if (!err) {
           console.log("Received values of form: ", values);
+          let url = "http://localhost:3008/api/user/login";
+          this.$axios
+            .post(url, values)
+            .then((res) => {
+              if (res.data.success) {
+                localStorage.setItem("motel-token", res.data.token);
+                res.data.data.isLogin = true;
+                this.setLogin(res.data.data);
+                this.$router.push("/");
+              }
+            })
+            .catch((err) => {
+              console.log(err.response);
+            });
         }
       });
     },
@@ -93,6 +115,11 @@ export default {
 
 <style lang="scss" scoped>
 // Login
+.login {
+  width: 70%;
+  margin: 0 auto;
+  padding-top: 10%;
+}
 #components-form-demo-normal-login .login-form {
   max-width: 300px;
 }
