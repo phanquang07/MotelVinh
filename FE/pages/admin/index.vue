@@ -11,10 +11,20 @@
         {{ item.name }}
       </div>
     </div>
+     <div class="container-fluid" style="font-size: 17px;">
+          <User v-if="headActive.user" />
+          <Address v-if="headActive.address" />
+      </div>
   </div>
 </template>
 <script>
+import User from "../../components/admin/user.vue";
+import Address from "../../components/admin/address.vue";
 export default {
+  components: {
+    User,
+    Address
+  },
   data() {
     return {
       heading: [
@@ -30,6 +40,10 @@ export default {
           name: "Địa điểm",
           key: "address",
         },
+        {
+          name: "Thể loại",
+          key: "category",
+        },
       ],
       headActive: {
         user: true,
@@ -41,7 +55,7 @@ export default {
   methods: {
     handleActive(key) {
       for (let h in this.headActive) {
-          this.headActive[h] = false
+        this.headActive[h] = false;
       }
       this.headActive[key] = true;
     },

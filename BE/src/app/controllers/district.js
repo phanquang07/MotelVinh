@@ -14,7 +14,7 @@ const districtController = {
     },
     list: async (req, res) => {
         try {
-            const rs = await districtModel.find({})
+            const rs = await districtModel.find({}).sort({created_time: -1})
             return res.send({success: true, data: rs})
         } catch (error) {
             return res.status(500).json({success: false, message: error.message})

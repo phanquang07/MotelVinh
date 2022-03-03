@@ -54,7 +54,7 @@ const UserController = {
   },
   list: async (req, res) => {
     try {
-      const list = await userModel.find({});
+      const list = await userModel.find({}).sort({created_time: -1});
       // Đếm để phân trang
       const count = await userModel.countDocuments();
       return res.send({ success: true, data: list, count });
