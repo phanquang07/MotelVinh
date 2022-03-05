@@ -14,7 +14,7 @@ const categoryController = {
     },
     list: async (req, res) => {
         try {
-            const rs = await categoryModel.find({})
+            const rs = await categoryModel.find({}).sort({created_time: -1})
             return res.send({success: true, data: rs})
         } catch (error) {
             return res.status(500).json({success: false, message: error.message})

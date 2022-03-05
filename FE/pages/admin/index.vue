@@ -14,16 +14,22 @@
      <div class="container-fluid" style="font-size: 17px;">
           <User v-if="headActive.user" />
           <Address v-if="headActive.address" />
+          <Category v-if="headActive.category" />
+          <Post v-if="headActive.post" />
       </div>
   </div>
 </template>
 <script>
 import User from "../../components/admin/user.vue";
 import Address from "../../components/admin/address.vue";
+import Category from "../../components/admin/category.vue";
+import Post from "../../components/admin/post.vue";
 export default {
   components: {
     User,
-    Address
+    Address,
+    Category,
+    Post
   },
   data() {
     return {

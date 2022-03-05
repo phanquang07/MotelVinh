@@ -1,10 +1,10 @@
 <template>
   <header class="header">
     
-    <h1>{{this.$store.state.name}}</h1>
+    <!-- <h1>{{this.$store.state.name}}</h1>
     <h1>{{this.$store.state.isLogin}}</h1>
     <h1>{{this.$store.state.id}}</h1>
-    <h1>{{this.$store.state.role}}</h1>
+    <h1>{{this.$store.state.role}}</h1> -->
     <a-row class="header-above">
       <div class="grid wide">
         <a-col :lg="12" :md="12" class="header-above-left">

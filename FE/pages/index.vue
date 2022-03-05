@@ -7,20 +7,20 @@
           <a-row :gutter="[10, 10]" class="motel-left-list">
             <a-col
               :md="12"
-              v-for="item in motelList"
-              :key="item.id"
+              v-for="item in list"
+              :key="item._id"
               class="motel-left-item"
             >
               <div class="motel-left-item-wrap">
                 <a-row :gutter="10">
                   <a-col :md="13" class="motel-item-thumbnails">
                     <nuxt-link
-                      to="/motel_details"
+                     :to="`/motel_details/${item._id}`"
                       class="motel-item-thumbnails-link link"
                     >
                       <img
                         :src="
-                          require(`/assets/images/home-motel/${item.thumbnails}`)
+                          item.images[0].name
                         "
                         alt="Phòng trọ"
                         class="motel-item-thumbnails-inner block"
@@ -30,21 +30,21 @@
                   <a-col :md="11" class="motel-item-text-wrap">
                     <div class="motel-item-text motel-item-title">
                       <nuxt-link
-                        to="/motel_details"
+                        :to="`/motel_details/${item._id}`"
                         class="motel-item-title-link link"
                       >
-                        {{ item.title }}
+                        {{ item.category ? item.category.name : "" }}
                       </nuxt-link>
                     </div>
                     <div class="motel-item-text motel-item-prices">
                       <i class="motel-icons-item fas fa-dollar-sign"></i
-                      >{{ item.prices }}
+                      >{{ item.price }}
                     </div>
                     <div class="motel-item-text motel-item-stars">
+                      <!-- <i :class="item.stars" class="stars-icon"></i>
                       <i :class="item.stars" class="stars-icon"></i>
                       <i :class="item.stars" class="stars-icon"></i>
-                      <i :class="item.stars" class="stars-icon"></i>
-                      <i :class="item.stars" class="stars-icon"></i>
+                      <i :class="item.stars" class="stars-icon"></i> -->
                     </div>
                     <div class="motel-item-text motel-item-area">
                       <i class="motel-icons-item fas fa-chart-area"></i
@@ -52,11 +52,12 @@
                     </div>
                     <div class="motel-item-text motel-item-address">
                       <i class="motel-icons-item fas fa-map-marker-alt"></i
-                      >{{ item.address }}
+                      >
+                      {{ item.district ? item.district.name : ""}}
                     </div>
                     <div class="motel-item-text motel-item-createAt">
                       <i class="motel-icons-item fas fa-clock"></i
-                      >{{ item.createAt }}
+                      >{{ new Date(item.created_time).toLocaleString() }}
                     </div>
                   </a-col>
                 </a-row>
@@ -130,9 +131,29 @@ export default {
     return {
       motelList: motelData.motelList,
       searchList: searchData.searchList,
+      list: []
     };
   },
-  methods: {},
+  created() {
+    this.fetch()
+  },
+  methods: {
+    fetch() {
+      let url = "http://localhost:3008/api/motel/list";
+      this.$axios
+        .post(url, {})
+        .then((res) => {
+          if (res.data.success) {
+            this.list = res.data.data
+            // this.list = JSON.parse(res.data.data);
+            console.log(this.list)  
+          }
+        })
+        .catch((err) => {
+          console.log(err.response);
+        });
+    }
+  },
 };
 </script>
 

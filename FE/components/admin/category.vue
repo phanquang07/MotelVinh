@@ -1,22 +1,28 @@
 <template>
   <div>
+    <div style="display: flex; margin-bottom: 20px">
+      <input
+        v-model="name"
+        type="text"
+        class="form-control"
+        style="width: 500px"
+      />
+      <button class="btn btn-success" @click="add">Thêm</button>
+    </div>
+
     <table class="table">
       <thead>
         <tr>
           <th scope="col">#</th>
-          <th scope="col">Email</th>
           <th scope="col">Tên</th>
-          <th scope="col">Số điện thoại</th>
-          <th scope="col">Ngày tạo</th>
-          <th scope="col">Thao tác</th>
+          <th scope="col">Last</th>
+          <th scope="col">Last</th>
         </tr>
       </thead>
       <tbody>
         <tr v-for="(item, index) in list" :key="item._id">
           <th scope="row">{{ index + 1 }}</th>
-          <td>{{ item.email }}</td>
           <td>{{ item.name }}</td>
-          <td>{{ item.phone }}</td>
           <td>{{ new Date(item.created_time).toLocaleString() }}</td>
           <td>
             <a href="#" class="text-warning">Sửa</a> /
@@ -31,15 +37,32 @@
 export default {
   data() {
     return {
+      name: "",
       list: [],
     };
   },
   mounted() {
-    this.fetchUser();
+    this.fetch();
   },
   methods: {
-    fetchUser() {
-      let url = "http://localhost:3008/api/user/list";
+    add() {
+      if (!this.name) return;
+      let url = "http://localhost:3008/api/category/create";
+      this.$axios
+        .post(url, { name: this.name })
+        .then((res) => {
+          if (res.data.success) {
+            // this.list = res.data.data;
+            this.name = "";
+            this.fetch();
+          }
+        })
+        .catch((err) => {
+          console.log(err.response);
+        });
+    },
+    fetch() {
+      let url = "http://localhost:3008/api/category/list";
       this.$axios
         .get(url)
         .then((res) => {
@@ -52,12 +75,12 @@ export default {
         });
     },
     handleDelete(id) {
-      let url = "http://localhost:3008/api/user/delete/" + id;
+      let url = "http://localhost:3008/api/category/delete/" + id;
       this.$axios
         .delete(url)
         .then((res) => {
           if (res.data.success) {
-            this.fetchUser();
+            this.fetch();
           }
         })
         .catch((err) => {

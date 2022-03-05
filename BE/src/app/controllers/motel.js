@@ -15,28 +15,32 @@ const motelCtr = {
         // kiểm tra xem file là array hay object để lưu
         // Khi upload nhiều ảnh thì trả về array còn 1 ảnh thì object nên check để lưu
         if (Array.isArray(file)) {
-            // Dùng promise all vì lặp qua hình ảnh để lưu vào db trả về promise
+          // Dùng promise all vì lặp qua hình ảnh để lưu vào db trả về promise
           arrImg = await Promise.all(
             file.map(async (img) => {
               // cấu trúc đường dẫn upload cho thư mục
+              let name = Date.now() + img.name;
               let url = path.join(__dirname, "../../../");
-              let uploadPath = url + "uploads/" + Date.now() + img.name;
+              let uploadPath = url + "uploads/" + name;
               // lưu hình ảnh lên folder uploads
               img.mv(uploadPath, function (err) {
                 if (err) return res.status(500).send(err);
               });
+              let imgUrl = "http://localhost:3008/images/" + name;
               // lưu đường dẫn hình ảnh vào db
-              let createImg = await imageModel.create({ name: uploadPath });
+              let createImg = await imageModel.create({ name: imgUrl });
               return createImg._id;
             })
           );
         } else {
           let url = path.join(__dirname, "../../../");
-          let uploadPath = url + "uploads/" + +Date.now() + file.name;
+          let name = Date.now() + file.name;
+          let uploadPath = url + "uploads/" + name;
           file.mv(uploadPath, function (err) {
             if (err) return res.status(500).send(err);
           });
-          let createImg = await imageModel.create({ name: uploadPath });
+          let imgUrl = "http://localhost:3008/images/" + name;
+          let createImg = await imageModel.create({ name: imgUrl });
           arrImg = [createImg._id];
         }
       }
@@ -105,6 +109,10 @@ const motelCtr = {
       // Tìm bài viết theo điều kiện
       const list = await motelModel
         .find(condition)
+        .populate("category")
+        .populate("district")
+        .populate("author")
+        .populate("images")
         .sort(sort || { created_time: -1 })
         .skip(Number(skip) || 0)
         .limit(Number(limit) || 10);
@@ -122,7 +130,12 @@ const motelCtr = {
       const id = req.params.id;
       if (!id)
         return res.status(500).send({ success: false, message: "Không có id" });
-      const rs = await motelModel.findById(id);
+      const rs = await motelModel
+        .findById(id)
+        .populate("category")
+        .populate("district")
+        .populate("author")
+        .populate("images");
       return res.send({ success: true, data: rs });
     } catch (error) {
       console.error(error);
