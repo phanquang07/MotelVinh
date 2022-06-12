@@ -128,14 +128,8 @@ const motelCtr = {
   get: async (req, res) => {
     try {
       const id = req.params.id;
-      if (!id)
-        return res.status(500).send({ success: false, message: "Không có id" });
-      const rs = await motelModel
-        .findById(id)
-        .populate("category")
-        .populate("district")
-        .populate("author")
-        .populate("images");
+      if (!id) return res.status(500).send({ success: false, message: "Không có id" });
+      const rs = await motelModel.findById(id).populate("category").populate("district").populate("author").populate("images");
       return res.send({ success: true, data: rs });
     } catch (error) {
       console.error(error);
@@ -146,8 +140,7 @@ const motelCtr = {
   delete: async (req, res) => {
     try {
       const id = req.params.id;
-      if (!id)
-        return res.status(500).send({ success: false, message: "Không có id" });
+      if (!id) return res.status(500).send({ success: false, message: "Không có id" });
       const rs = await motelModel.findByIdAndDelete(id);
       return res.send({ success: true, data: rs });
     } catch (error) {
@@ -159,9 +152,56 @@ const motelCtr = {
     try {
       const data = req.body;
       const id = req.params.id;
-      if (!id)
-        return res.status(500).send({ success: false, message: "Không có id" });
+      if (!id) return res.status(500).send({ success: false, message: "Không có id" });
       const rs = await motelModel.findByIdAndUpdate(id, data, { new: true });
+      return res.send({ success: true, data: rs });
+    } catch (error) {
+      console.error(error);
+      return res.status(500).send({ success: false, message: error.message });
+    }
+  },
+  // tìm kiếm trọ
+  search: async (req, res) => {
+    try {
+      const search = req.body.data;
+      let rs = {};
+      if (search.district) {
+        rs = await motelModel.find({ district: search.district });
+      }
+      if (search.type) {
+        rs = await motelModel.find({ category: search.type });
+      }
+      if (search.price) {
+        if (search.price == 1) {
+          rs = await motelModel.find({ price: { $lte: 1000000 } });
+        }
+        if (search.price == 2) {
+          rs = await motelModel.find({ price: { $gte: 1000000, $lte: 1500000 } });
+        }
+        if (search.price == 3) {
+          rs = await motelModel.find({ price: { $gte: 1500000, $lte: 2000000 } });
+        }
+        if (search.price == 4) {
+          rs = await motelModel.find({ price: { $gte: 2000000 } });
+        }
+      }
+      if (search.area) {
+        if (search.area == 1) {
+          rs = await motelModel.find({ area: { $lte: 10 } });
+        }
+        if (search.area == 2) {
+          rs = await motelModel.find({ area: { $gte: 10, $lte: 15 } });
+        }
+        if (search.area == 3) {
+          rs = await motelModel.find({ area: { $gte: 15, $lte: 20 } });
+        }
+        if (search.area == 4) {
+          rs = await motelModel.find({ area: { $gte: 20 } });
+        }
+      }
+      if (rs.length == 0) {
+        return res.send({ success: false, message: "Không tìm thấy kết quả nào!" });
+      }
       return res.send({ success: true, data: rs });
     } catch (error) {
       console.error(error);

@@ -13,4 +13,5 @@ router.post("/list", motelController.list);
 
 router.delete("/delete/:id", motelController.delete);
 
+router.post("/search", motelController.search);
 module.exports = router;

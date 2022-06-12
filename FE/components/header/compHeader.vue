@@ -1,6 +1,5 @@
 <template>
   <header class="header">
-    
     <!-- <h1>{{this.$store.state.name}}</h1>
     <h1>{{this.$store.state.isLogin}}</h1>
     <h1>{{this.$store.state.id}}</h1>
@@ -44,17 +43,22 @@
               </li>
             </ul>
           </a-col>
-          <a-col v-if="this.$store.state.isLogin" :lg="6" :md="6" class="post" style="display: flex;">
+          <a-col
+            v-if="this.$store.state.isLogin"
+            :lg="6"
+            :md="6"
+            class="post"
+            style="display: flex"
+          >
             <nuxt-link to="/post/create" class="post-item-link link"
               >Đăng tin</nuxt-link
-            > 
-            <a href="#" class="post-item-link link"
-            @click="handleLogout"
+            >
+            <a href="#" class="post-item-link link" @click="handleLogout"
               >Đăng xuất</a
             >
-             <nuxt-link to="/admin" class="post-item-link link"
+            <nuxt-link to="/admin" class="post-item-link link"
               >Quản trị</nuxt-link
-            > 
+            >
           </a-col>
         </div>
       </a-row>
@@ -63,7 +67,7 @@
 </template>
 <script>
 import navData from "~/api/navList.json";
-import {mapMutations} from "vuex"
+import { mapMutations } from "vuex";
 export default {
   data() {
     return {
@@ -84,21 +88,21 @@ export default {
         name: "",
         role: null,
         isLogin: false,
-        id: ""
-      }
-      this.setLogin(data)
-      localStorage.setItem('motel-token', '')
-    }
+        id: "",
+      };
+      this.setLogin(data);
+      localStorage.setItem("motel-token", "");
+    },
   },
 };
 </script>
 
 <style lang="scss" scoped>
-.header {
-  // position: fixed;
-  // z-index: 10000;
-  // width: 100%;
-}
+// .header {
+//   position: fixed;
+//   z-index: 10000;
+//   width: 100%;
+// }
 .header-above {
   background: $white-color;
   padding: 1rem 0;
