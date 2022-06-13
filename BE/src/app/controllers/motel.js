@@ -124,6 +124,27 @@ const motelCtr = {
       return res.status(500).send({ success: false, message: error.message });
     }
   },
+  // lấy danh sách bài viết theo loại
+  listType: async (req, res) => {
+    try {
+      const type = req.body.data;
+      console.log("get type param ---", type);
+      const list = await motelModel
+        .find({ category: type })
+        .populate("category")
+        .populate("district")
+        .populate("author")
+        .populate("images")
+        .sort({ created_time: -1 });
+      if (!list) {
+        return res.status(404).send({ success: false, message: "Not found" });
+      }
+      return res.send({ success: true, data: list });
+    } catch (error) {
+      console.error(error);
+      return res.status(500).send({ success: false, message: error.message });
+    }
+  },
   // lấy 1 bài viết
   get: async (req, res) => {
     try {
