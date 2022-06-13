@@ -223,6 +223,7 @@ export default {
             this.$emit("search", res.data.data);
           } else {
             console.log("get error ---", res.data.message);
+            this.$emit("search", []);
           }
         })
         .catch((err) => {

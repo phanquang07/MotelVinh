@@ -166,37 +166,77 @@ const motelCtr = {
       const search = req.body.data;
       let rs = {};
       if (search.district) {
-        rs = await motelModel.find({ district: search.district });
+        rs = await motelModel.find({ district: search.district }).populate("category").populate("district").populate("author").populate("images");
       }
       if (search.type) {
-        rs = await motelModel.find({ category: search.type });
+        rs = await motelModel.find({ category: search.type }).populate("category").populate("district").populate("author").populate("images");
       }
       if (search.price) {
         if (search.price == 1) {
-          rs = await motelModel.find({ price: { $lte: 1000000 } });
+          rs = await motelModel
+            .find({ price: { $lte: 1000000 } })
+            .populate("category")
+            .populate("district")
+            .populate("author")
+            .populate("images");
         }
         if (search.price == 2) {
-          rs = await motelModel.find({ price: { $gte: 1000000, $lte: 1500000 } });
+          rs = await motelModel
+            .find({ price: { $gte: 1000000, $lte: 1500000 } })
+            .populate("category")
+            .populate("district")
+            .populate("author")
+            .populate("images");
         }
         if (search.price == 3) {
-          rs = await motelModel.find({ price: { $gte: 1500000, $lte: 2000000 } });
+          rs = await motelModel
+            .find({ price: { $gte: 1500000, $lte: 2000000 } })
+            .populate("category")
+            .populate("district")
+            .populate("author")
+            .populate("images");
         }
         if (search.price == 4) {
-          rs = await motelModel.find({ price: { $gte: 2000000 } });
+          rs = await motelModel
+            .find({ price: { $gte: 2000000 } })
+            .populate("category")
+            .populate("district")
+            .populate("author")
+            .populate("images");
         }
       }
       if (search.area) {
         if (search.area == 1) {
-          rs = await motelModel.find({ area: { $lte: 10 } });
+          rs = await motelModel
+            .find({ area: { $lte: 10 } })
+            .populate("category")
+            .populate("district")
+            .populate("author")
+            .populate("images");
         }
         if (search.area == 2) {
-          rs = await motelModel.find({ area: { $gte: 10, $lte: 15 } });
+          rs = await motelModel
+            .find({ area: { $gte: 10, $lte: 15 } })
+            .populate("category")
+            .populate("district")
+            .populate("author")
+            .populate("images");
         }
         if (search.area == 3) {
-          rs = await motelModel.find({ area: { $gte: 15, $lte: 20 } });
+          rs = await motelModel
+            .find({ area: { $gte: 15, $lte: 20 } })
+            .populate("category")
+            .populate("district")
+            .populate("author")
+            .populate("images");
         }
         if (search.area == 4) {
-          rs = await motelModel.find({ area: { $gte: 20 } });
+          rs = await motelModel
+            .find({ area: { $gte: 20 } })
+            .populate("category")
+            .populate("district")
+            .populate("author")
+            .populate("images");
         }
       }
       if (rs.length == 0) {

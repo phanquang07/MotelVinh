@@ -1,9 +1,8 @@
 <template>
   <div class="main-layout">
     <comp-header />
-    <comp-filters @search="getSearch" />
     <nuxt />
-    <slot :search="listSearch" />
+    <slot />
     <comp-footer />
     <comp-back-top />
   </div>
@@ -12,23 +11,15 @@
 <script>
 import compHeader from "@/components/header/compHeader.vue";
 import compFooter from "@/components/footer/compFooter.vue";
-import CompFilters from "@/components/filters/compFilters.vue";
 import CompBackTop from "@/components/back_top/compBackTop.vue";
 // import searchData from "@/api/searchList.json";
 
 export default {
-  components: { compHeader, compFooter, CompFilters, CompBackTop },
+  components: { compHeader, compFooter, CompBackTop },
   data() {
-    return {
-      listSearch: [],
-    };
+    return {};
   },
-  methods: {
-    getSearch(val) {
-      this.listSearch = val;
-      console.log("get list search --", this.listSearch);
-    },
-  },
+  methods: {},
 };
 </script>
 
