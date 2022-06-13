@@ -179,14 +179,31 @@
               <h2 class="motel-right-item-title motel-item-news-title mar-pad">
                 Phòng trọ mới đăng
               </h2>
+              <a-row class="motel-filter-item-wrap">
+                <a-col
+                  :xs="12"
+                  class="motel-filter-item-inner-left"
+                  v-for="item in newMotel"
+                  :key="item._id"
+                >
+                  <a
+                    href="#"
+                    class="motel-filter-item block"
+                    @click="getFilter(item._id, 'area')"
+                  >
+                    <i class="fas fa-angle-right"></i>
+                    {{ item.title }}
+                  </a>
+                </a-col>
+              </a-row>
             </div>
-            <div class="motel-right-item motel-item-recents">
+            <!-- <div class="motel-right-item motel-item-recents">
               <h2
                 class="motel-right-item-title motel-item-recents-title mar-pad"
               >
                 Phòng trọ vừa xem
               </h2>
-            </div>
+            </div> -->
           </a-col>
         </div>
       </a-row>
@@ -242,6 +259,7 @@ export default {
           name: "Trên 20m2",
         },
       ],
+      newMotel: [],
       optionSearch: {},
     };
   },
@@ -261,6 +279,7 @@ export default {
         .then((res) => {
           if (res.data.success) {
             this.list = res.data.data;
+            this.newMotel = res.data.data;
           }
         })
         .catch((err) => {

@@ -9,13 +9,16 @@
     <div v-if="post">
       <a-carousel arrows dots-class="slick-dots slick-thumb">
         <a slot="customPaging" slot-scope="props">
-          <img style="max-width: 100%; max-hegight: 300px;" :src="getImgUrl(props.i)" />
+          <img
+            style="max-width: 100%; max-hegight: 300px"
+            :src="getImgUrl(props.i)"
+          />
         </a>
         <div v-for="item in post.images" :key="item._id">
           <img :src="item.name" />
         </div>
       </a-carousel>
-      <div style="margin-top: 50px;">
+      <div class="content-detail">
         <h1>{{ post.title }}</h1>
         <p><strong>Loại: </strong> {{ post.category.name }}</p>
         <p><strong>Khu vực: </strong> {{ post.district.name }}</p>
@@ -24,7 +27,7 @@
         <p><strong>Giá: </strong> {{ post.price }} đ</p>
         <p><strong>Diện tích: </strong> {{ post.area }} m2</p>
         <h5><strong>Mô tả</strong></h5>
-        <p>{{post.descriptions}}</p>
+        <p>{{ post.descriptions }}</p>
       </div>
 
       <!-- {{ post }} -->
@@ -92,5 +95,10 @@ export default {
 }
 .ant-carousel >>> .slick-thumb li.slick-active img {
   filter: grayscale(0%);
+}
+.content-detail {
+  max-width: 1170px;
+  margin: 50px auto 0 auto;
+  width: 1170px;
 }
 </style>
