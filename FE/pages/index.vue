@@ -21,7 +21,13 @@
                         class="motel-item-thumbnails-link link"
                       >
                         <img
-                          :src="item.images[0].name"
+                          :src="
+                            item.images
+                              ? item.images[0].name
+                              : '/images/no-image.jpg'
+                          "
+                          width="200px"
+                          height="135px"
                           alt="Phòng trọ"
                           class="motel-item-thumbnails-inner block"
                         />

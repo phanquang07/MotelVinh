@@ -6,6 +6,7 @@ const motelCtr = {
   // Tạo bài viết
   create: async (req, res) => {
     try {
+      console.log("get data ---", req.body);
       const data = req.body;
       // khai báo mảng chứa _id hình ảnh
       let arrImg = null;

@@ -4,6 +4,7 @@
     <nuxt />
     <compFooter />
     <compBackTop />
+    <notifications position="top right" />
   </div>
 </template>
 

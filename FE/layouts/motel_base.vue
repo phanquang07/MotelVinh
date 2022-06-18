@@ -5,6 +5,7 @@
     <slot />
     <comp-footer />
     <comp-back-top />
+    <notifications position="top right" />
   </div>
 </template>
 
