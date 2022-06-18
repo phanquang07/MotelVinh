@@ -72,11 +72,12 @@
         <nuxt-link to="/register"> Đăng ký ngay! </nuxt-link>
       </a-form-item>
     </a-form>
+    <notifications position="top right" />
   </div>
 </template>
 
 <script>
-import {mapMutations} from "vuex"
+import { mapMutations } from "vuex";
 export default {
   // layout: 'motel_base',
   data() {
@@ -97,10 +98,22 @@ export default {
             .post(url, values)
             .then((res) => {
               if (res.data.success) {
+                console.log("get res data ----", res.data);
+                this.$notify({
+                  type: "success",
+                  title: "Thành công !",
+                  text: "Đăng nhập thành công !",
+                });
                 localStorage.setItem("motel-token", res.data.token);
                 res.data.data.isLogin = true;
                 this.setLogin(res.data.data);
                 this.$router.push("/");
+              } else {
+                this.$notify({
+                  type: "error",
+                  title: "Thông báo",
+                  text: "Đăng nhập không thành công !",
+                });
               }
             })
             .catch((err) => {

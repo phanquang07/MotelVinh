@@ -242,7 +242,6 @@ export default {
     },
     handleSave() {
       let check = this.beforSave();
-      console.log("get action create ---", check);
       if (!check) return;
       let data = {
         title: this.title_post,
@@ -264,7 +263,6 @@ export default {
       this.$axios
         .post(url, data)
         .then((res) => {
-          console.log("get res ----", res);
           if (res) {
             this.$notify({
               type: "success",

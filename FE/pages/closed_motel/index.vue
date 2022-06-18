@@ -20,7 +20,11 @@
                         class="motel-item-thumbnails-link link"
                       >
                         <img
-                          :src="item.images[0].name"
+                          :src="
+                            item.images
+                              ? item.images[0].name
+                              : '/images/no-image.png'
+                          "
                           alt="Phòng trọ"
                           class="motel-item-thumbnails-inner block"
                         />
@@ -243,7 +247,7 @@ export default {
     this.fetchCategory();
   },
   mounted() {
-    // this.fetch();
+    // this.fetch(this.type);
   },
   methods: {
     fetch(type) {

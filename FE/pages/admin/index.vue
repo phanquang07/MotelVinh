@@ -1,5 +1,8 @@
 <template>
   <div>
+    <div class="back-home">
+      <button class="btn-back-home" @click="backHome">Trang chủ</button>
+    </div>
     <div class="heading">
       <div
         v-for="(item, idx) in heading"
@@ -11,12 +14,12 @@
         {{ item.name }}
       </div>
     </div>
-     <div class="container-fluid" style="font-size: 17px;">
-          <User v-if="headActive.user" />
-          <Address v-if="headActive.address" />
-          <Category v-if="headActive.category" />
-          <Post v-if="headActive.post" />
-      </div>
+    <div class="container-fluid" style="font-size: 17px">
+      <User v-if="headActive.user" />
+      <Address v-if="headActive.address" />
+      <Category v-if="headActive.category" />
+      <Post v-if="headActive.post" />
+    </div>
   </div>
 </template>
 <script>
@@ -29,7 +32,7 @@ export default {
     User,
     Address,
     Category,
-    Post
+    Post,
   },
   data() {
     return {
@@ -65,6 +68,9 @@ export default {
       }
       this.headActive[key] = true;
     },
+    backHome() {
+      this.$router.push("/");
+    },
   },
 };
 </script>
@@ -87,5 +93,17 @@ export default {
   .heading-item:hover {
     color: red;
   }
+}
+.btn-back-home {
+  background: #fff;
+  border: 1px solid #ccc;
+  padding: 8px 20px;
+  border-radius: 5px;
+  font-size: 14px;
+  cursor: pointer;
+}
+.back-home {
+  margin-bottom: 15px;
+  padding: 15px 0 0 15px;
 }
 </style>
