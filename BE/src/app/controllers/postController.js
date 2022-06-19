@@ -85,7 +85,7 @@ const postController = {
         images,
         author,
         phone,
-        description,
+        descriptions,
       } = req.body;
       
       const newPost = await POSTS.create({
@@ -98,7 +98,7 @@ const postController = {
         images,
         author,
         phone,
-        description,
+        descriptions,
         created_at: Date.now(),
       });
 

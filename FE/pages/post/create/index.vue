@@ -118,7 +118,7 @@
         type="text"
         class="form-control"
         placeholder="Mô tả ..."
-        v-model="description"
+        v-model="descriptions"
         @input="changeInput"
       />
     </div>
@@ -155,7 +155,7 @@ export default {
       images_post: "",
       author_post: "",
       phone_post: "",
-      description: "",
+      descriptions: "",
       listCategory: [],
       listDistrict: [],
       category: null,
@@ -246,7 +246,7 @@ export default {
       let data = {
         title: this.title_post,
         category: this.category,
-        description: this.description,
+        descriptions: this.descriptions,
         district: this.district,
         address: this.address_post,
         phone: this.phone_post,
@@ -273,9 +273,9 @@ export default {
             this.price_post = 0;
             this.area_post = 0;
             this.address_post = "";
-            this.description = "";
+            this.descriptions = "";
             this.phone_post = "";
-            this.description = "";
+            this.descriptions = "";
           }
         })
         .catch((err) => {

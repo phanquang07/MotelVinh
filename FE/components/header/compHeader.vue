@@ -47,9 +47,7 @@
             v-if="this.$store.state.isLogin"
             :lg="6"
             :md="6"
-            class="post"
-            style="display: flex"
-          >
+            class="post"          >
             <nuxt-link to="/post/create" class="post-item-link link"
               >Đăng tin</nuxt-link
             >
@@ -135,6 +133,7 @@ export default {
 .navbar-wrap {
   background: $main-color;
   .navbar {
+    padding: 0;
     .nav-list {
       display: flex;
       .nav-item {
@@ -152,9 +151,11 @@ export default {
     }
   }
   .post {
+    display: flex;
+    justify-content: flex-end;
     .post-item-link {
-      float: right;
       padding: 12px;
+      margin-left: 2px;
       font-weight: 700;
       color: $text2-color;
       background: $hover-color;

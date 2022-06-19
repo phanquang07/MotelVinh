@@ -1,13 +1,15 @@
 <template>
   <div>
-    <div style="display: flex; margin-bottom: 20px">
-      <input
-        v-model="name"
-        type="text"
-        class="form-control"
-        style="width: 500px"
-      />
-      <button class="btn btn-success" @click="add">Thêm</button>
+    <div class="admin-categry">
+      <div class="admin-categry-inner">
+        <input
+          v-model="name"
+          type="text"
+          class="form-control admin-input"
+          placeholder="Thêm loại phòng"
+        />
+        <button class="btn btn-sub" @click="add">Thêm</button>
+      </div>
     </div>
 
     <table class="table">
@@ -26,7 +28,9 @@
           <td>{{ new Date(item.created_time).toLocaleString() }}</td>
           <td>
             <a href="#" class="text-warning">Sửa</a> /
-            <a href="#" class="text-danger" @click="handleDelete(item._id)">Xoá</a>
+            <a href="#" class="text-danger" @click="handleDelete(item._id)"
+              >Xoá</a
+            >
           </td>
         </tr>
       </tbody>
@@ -90,3 +94,9 @@ export default {
   },
 };
 </script>
+<style lang="scss" scoped>
+.admin-categry-inner {
+  display: flex;
+  max-width: 40rem;
+}
+</style>

@@ -376,7 +376,7 @@ export default {
             }
           }
           .motel-item-text-wrap {
-            padding: 1rem;
+            padding-top: 0.6rem;
             .motel-item-text {
               font-weight: 500;
             }

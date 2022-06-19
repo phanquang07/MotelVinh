@@ -38,6 +38,19 @@ main {
   margin: 0 auto;
 }
 
+.grid-inner {
+  max-width: 40rem;
+  width: 100%;
+  margin: 0 auto;
+  display: block
+}
+
+.grid-inner2 {
+  max-width: 800px;
+  width: 100%;
+  margin: 0 auto;
+}
+
 .mar-pad {
   margin: 0;
   padding: 0;
@@ -54,4 +67,23 @@ main {
 
 .block {
   display: block;
+}
+
+.btn-sub {
+  color: $text2-color;
+  background-color: $hover-color;
+  border: none;
+  border-radius: 0.4rem;
+  padding: 0.6rem 1.8rem;
+  margin-left: 2rem;
+  font-size: 1.4rem;
+  &:hover {
+    background-color: rgba(247, 56, 89, 0.6);
+    cursor: pointer;
+  }
+
+}
+
+.admin-input {
+  font-size: 1.4rem;
 }

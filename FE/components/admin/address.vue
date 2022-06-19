@@ -1,13 +1,13 @@
 <template>
-  <div>
-    <div style="display: flex; margin-bottom: 20px">
+  <div class="admin-address">
+    <div class="admin-address-inner">
       <input
         v-model="name"
         type="text"
-        class="form-control"
-        style="width: 500px"
+        class="form-control admin-input"
+        placeholder="Thêm địa điểm"
       />
-      <button class="btn btn-success" @click="add">Thêm</button>
+      <button class="btn-address btn-sub" @click="add">Thêm</button>
     </div>
 
     <table class="table">
@@ -82,7 +82,7 @@ export default {
         .delete(url)
         .then((res) => {
           if (res.data.success) {
-            this.fetch()
+            this.fetch();
           }
         })
         .catch((err) => {
@@ -92,3 +92,11 @@ export default {
   },
 };
 </script>
+<style lang="scss" scoped>
+.admin-address {
+  .admin-address-inner {
+    display: flex;
+    max-width: 40rem;
+  }
+}
+</style>
