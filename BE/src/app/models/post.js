@@ -33,7 +33,7 @@ const postsSchema = new schema({
   phone: {
     type: String,
   },
-  description: {
+  descriptions: {
     type: String,
   },
   created_at: {
