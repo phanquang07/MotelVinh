@@ -5,7 +5,12 @@
       <a-row class="motel-base">
         <div class="grid wide">
           <a-col :lg="16" class="motel-left">
-            <h2 class="motel-title mar-pad">Danh sách phòng trọ</h2>
+            <div class="header-title">
+              <h2 class="motel-title mar-pad">Danh sách phòng trọ</h2>
+              <button class="btn-reload" @click="reloadData">
+                Tải lại <a-icon type="redo" />
+              </button>
+            </div>
             <a-row :gutter="[10, 10]" class="motel-left-list">
               <a-col
                 :md="12"
@@ -266,7 +271,12 @@ export default {
         },
       ],
       newMotel: [],
-      optionSearch: {},
+      optionSearch: {
+        district: "",
+        type: "",
+        price: "",
+        area: "",
+      },
     };
   },
   created() {
@@ -278,10 +288,20 @@ export default {
     getSearch(val) {
       this.list = val;
     },
+    reloadData() {
+      this.fetch();
+    },
     fetch() {
+      let data = {
+        filter: {},
+      };
+      data.filter.district = this.optionSearch.district;
+      data.filter.category = this.optionSearch.type;
+      data.filter.price = this.optionSearch.price;
+      data.filter.area = this.optionSearch.area;
       let url = "http://localhost:3008/api/motel/list";
       this.$axios
-        .post(url, {})
+        .post(url, { data: data })
         .then((res) => {
           if (res.data.success) {
             this.list = res.data.data;
@@ -319,27 +339,30 @@ export default {
         });
     },
     getFilter(val, type) {
+      let data = {};
       if (type === "district") {
-        this.optionSearch.district = val;
+        data.filter.district = val;
       }
       if (type === "type") {
-        this.optionSearch.type = val;
+        data.filter.category = val;
       }
-      if (type === "price") {
-        this.optionSearch.price = val;
-      }
-      if (type === "area") {
-        this.optionSearch.area = val;
-      }
-      let url = "http://localhost:3008/api/motel/search";
+      // if (type === "price") {
+      //   this.optionSearch.price = val;
+      // }
+      // if (type === "area") {
+      //   this.optionSearch.area = val;
+      // }
+
+      let url = "http://localhost:3008/api/motel/list";
       this.$axios
-        .post(url, { data: this.optionSearch })
+        .post(url, { data: data })
         .then((res) => {
           if (res.data.success) {
             this.list = res.data.data;
           } else {
             console.log("get error ---", res.data.message);
             this.list = [];
+            console.log("get list ---", this.list);
           }
         })
         .catch((err) => {
@@ -457,5 +480,13 @@ export default {
 }
 .empty-data {
   margin: 10px 0;
+}
+.header-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.btn-reload {
+  background: inherit;
 }
 </style>

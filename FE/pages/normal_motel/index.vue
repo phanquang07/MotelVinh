@@ -23,7 +23,7 @@
                           :src="
                             item.images
                               ? item.images[0].name
-                              : '/images/no-image.png'
+                              : '/images/no-image.jpg'
                           "
                           alt="Phòng trọ"
                           class="motel-item-thumbnails-inner block"

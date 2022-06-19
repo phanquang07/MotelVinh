@@ -207,20 +207,22 @@ export default {
         });
     },
     search() {
-      if (
-        !this.optionSearch.district &&
-        !this.optionSearch.type &&
-        !this.optionSearch.price &&
-        !this.optionSearch.area
-      ) {
-        return false;
-      }
-      let url = "http://localhost:3008/api/motel/search";
+      let data = {
+        filter: {},
+      };
+      data.filter.district = this.optionSearch.district;
+      data.filter.category = this.optionSearch.type;
+      data.filter.price = this.optionSearch.price;
+      data.filter.area = this.optionSearch.area;
+      console.log("get data ---", data);
+
+      let url = "http://localhost:3008/api/motel/list";
       this.$axios
-        .post(url, { data: this.optionSearch })
+        .post(url, { data: data })
         .then((res) => {
           if (res.data.success) {
             this.$emit("search", res.data.data);
+            console.log("get res data ----", res.data);
           } else {
             console.log("get error ---", res.data.message);
             this.$emit("search", []);

@@ -6,7 +6,6 @@ const motelCtr = {
   // Tạo bài viết
   create: async (req, res) => {
     try {
-      console.log("get data ---", req.body);
       const data = req.body;
       // khai báo mảng chứa _id hình ảnh
       let arrImg = null;
@@ -59,7 +58,8 @@ const motelCtr = {
     try {
       const { skip, limit } = req.query;
       // filter {category || district || areaFrom && areaTo || }
-      const { search, sort, filter } = req.body;
+      const { search, sort } = req.body;
+      const filter = req.body.data.filter;
       let condition = {};
       // check điều kiện
       if (search) {
@@ -96,16 +96,16 @@ const motelCtr = {
           };
         }
         // kiểm tra khoảng thời gian tạo
-        if (filter.timeTo && filter.timeFrom) {
-          condition.created_time = {
-            $gte: filter.timeFrom,
-            $lte: filter.timeTo,
-          };
-        }
-        // kiểm tra hạn
-        if (filter.approved != undefined) {
-          condition.approved = filter.approved;
-        }
+        // if (filter.timeTo && filter.timeFrom) {
+        //   condition.created_time = {
+        //     $gte: filter.timeFrom,
+        //     $lte: filter.timeTo,
+        //   };
+        // }
+        // // kiểm tra hạn
+        // if (filter.approved != undefined) {
+        //   condition.approved = filter.approved;
+        // }
       }
       // Tìm bài viết theo điều kiện
       const list = await motelModel
@@ -186,81 +186,44 @@ const motelCtr = {
   search: async (req, res) => {
     try {
       const search = req.body.data;
+      console.log("get search param ---", search);
       let rs = {};
-      if (search.district) {
-        rs = await motelModel.find({ district: search.district }).populate("category").populate("district").populate("author").populate("images");
+      let priceLevel = { gte: 0, lte: 0 };
+      let unitLevel = { gte: 0, lte: 0 };
+      if (search.price == 1) {
+        priceLevel = { gte: 0, lte: 1000000 };
       }
-      if (search.type) {
-        rs = await motelModel.find({ category: search.type }).populate("category").populate("district").populate("author").populate("images");
+      if (search.price == 2) {
+        priceLevel = { gte: 1000000, lte: 1500000 };
       }
-      if (search.price) {
-        if (search.price == 1) {
-          rs = await motelModel
-            .find({ price: { $lte: 1000000 } })
-            .populate("category")
-            .populate("district")
-            .populate("author")
-            .populate("images");
-        }
-        if (search.price == 2) {
-          rs = await motelModel
-            .find({ price: { $gte: 1000000, $lte: 1500000 } })
-            .populate("category")
-            .populate("district")
-            .populate("author")
-            .populate("images");
-        }
-        if (search.price == 3) {
-          rs = await motelModel
-            .find({ price: { $gte: 1500000, $lte: 2000000 } })
-            .populate("category")
-            .populate("district")
-            .populate("author")
-            .populate("images");
-        }
-        if (search.price == 4) {
-          rs = await motelModel
-            .find({ price: { $gte: 2000000 } })
-            .populate("category")
-            .populate("district")
-            .populate("author")
-            .populate("images");
-        }
+      if (search.price == 3) {
+        priceLevel = { gte: 1500000, lte: 2000000 };
       }
-      if (search.area) {
-        if (search.area == 1) {
-          rs = await motelModel
-            .find({ area: { $lte: 10 } })
-            .populate("category")
-            .populate("district")
-            .populate("author")
-            .populate("images");
-        }
-        if (search.area == 2) {
-          rs = await motelModel
-            .find({ area: { $gte: 10, $lte: 15 } })
-            .populate("category")
-            .populate("district")
-            .populate("author")
-            .populate("images");
-        }
-        if (search.area == 3) {
-          rs = await motelModel
-            .find({ area: { $gte: 15, $lte: 20 } })
-            .populate("category")
-            .populate("district")
-            .populate("author")
-            .populate("images");
-        }
-        if (search.area == 4) {
-          rs = await motelModel
-            .find({ area: { $gte: 20 } })
-            .populate("category")
-            .populate("district")
-            .populate("author")
-            .populate("images");
-        }
+      if (search.price == 4) {
+        priceLevel = { gte: 2000000, lte: 999999999 };
       }
+      if (search.unit == 1) {
+        unitLevel = { gte: 0, lte: 10 };
+      }
+      if (search.unit == 2) {
+        unitLevel = { gte: 10, lte: 15 };
+      }
+      if (search.unit == 3) {
+        unitLevel = { gte: 15, lte: 20 };
+      }
+      if (search.unit == 4) {
+        unitLevel = { gte: 20, lte: 999 };
+      }
+      const condition = {
+        district: search.district,
+        category: search.type,
+        price: { $gte: priceLevel.gte, $lte: priceLevel.lte },
+        area: { $gte: unitLevel.gte, $lte: unitLevel.lte },
+      };
+      console.log("get condition  ---", condition);
+      rs = await motelModel.find(condition).populate("category").populate("district").populate("author").populate("images");
+
+      console.log("rs ---", rs);
       if (rs.length == 0) {
         return res.send({ success: false, message: "Không tìm thấy kết quả nào!" });
       }
