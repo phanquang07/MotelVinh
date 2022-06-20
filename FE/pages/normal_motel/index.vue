@@ -111,12 +111,12 @@
                   <a-col
                     :xs="12"
                     class="motel-filter-item-inner-left"
-                    v-for="item in listPrice"
-                    :key="item._id"
+                    v-for="(item, idx) in listPrice"
+                    :key="idx"
                   >
                     <span
                       class="motel-filter-item block"
-                      @click="getFilter(item._id, 'price')"
+                      @click="getFilter(idx + 1, 'price')"
                     >
                       <i class="fas fa-angle-right"></i>
                       {{ item.name }}
@@ -135,12 +135,12 @@
                   <a-col
                     :xs="12"
                     class="motel-filter-item-inner-left"
-                    v-for="item in listArea"
-                    :key="item._id"
+                    v-for="(item, idx) in listArea"
+                    :key="idx"
                   >
                     <span
                       class="motel-filter-item block"
-                      @click="getFilter(item._id, 'area')"
+                      @click="getFilter(idx + 1, 'area')"
                     >
                       <i class="fas fa-angle-right"></i>
                       {{ item.name }}
@@ -247,9 +247,13 @@ export default {
   },
   methods: {
     fetch(type) {
-      let url = "http://localhost:3008/api/motel/listType";
+      let data = {
+        filter: {},
+      };
+      data.filter.category = type;
+      let url = "http://localhost:3008/api/motel/list";
       this.$axios
-        .post(url, { data: type })
+        .post(url, { data: data })
         .then((res) => {
           if (res.data.success) {
             this.list = res.data.data;
@@ -294,19 +298,52 @@ export default {
         });
     },
     getFilter(val, type) {
+      let data = {
+        filter: {},
+      };
       if (type === "district") {
-        this.optionSearch.district = val;
+        data.filter.district = val;
       }
+      data.filter.category = this.type;
       if (type === "price") {
-        this.optionSearch.price = val;
+        if (val == 1) {
+          data.filter.priceFrom = 0;
+          data.filter.priceTo = 1000000;
+        }
+        if (val == 2) {
+          data.filter.priceFrom = 1000000;
+          data.filter.priceTo = 1500000;
+        }
+        if (val == 3) {
+          data.filter.priceFrom = 1500000;
+          data.filter.priceTo = 2000000;
+        }
+        if (val == 4) {
+          data.filter.priceFrom = 2000000;
+          data.filter.priceTo = 1000000000;
+        }
       }
       if (type === "area") {
-        this.optionSearch.area = val;
+        if (val == 1) {
+          data.filter.areaFrom = 0;
+          data.filter.areaTo = 10;
+        }
+        if (val == 2) {
+          data.filter.areaFrom = 10;
+          data.filter.areaTo = 15;
+        }
+        if (val == 3) {
+          data.filter.areaFrom = 15;
+          data.filter.areaTo = 20;
+        }
+        if (val == 4) {
+          data.filter.areaFrom = 20;
+          data.filter.areaTo = 1000;
+        }
       }
-      this.optionSearch.type = this.type;
-      let url = "http://localhost:3008/api/motel/search";
+      let url = "http://localhost:3008/api/motel/list";
       this.$axios
-        .post(url, { data: this.optionSearch })
+        .post(url, { data: data })
         .then((res) => {
           if (res.data.success) {
             this.list = res.data.data;

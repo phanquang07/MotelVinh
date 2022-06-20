@@ -14,21 +14,6 @@
       "id": 3,
       "path": "/normal_motel",
       "name": "Trọ thường"
-    },
-    {
-      "id": 4,
-      "path": "/news_motel",
-      "name": "Trọ mới đăng"
-    },
-    {
-      "id": 5,
-      "path": "/hot_motel",
-      "name": "Trọ nổi bật"
-    },
-    {
-      "id": 6,
-      "path": "/contact",
-      "name": "Liên hệ"
     }
   ]
 }

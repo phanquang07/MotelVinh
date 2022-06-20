@@ -12,6 +12,7 @@
             <a-select
               :default-value="0"
               style="width: 100%"
+              v-model="district"
               @change="choseDistrict"
             >
               <a-select-option
@@ -35,6 +36,7 @@
             <a-select
               :default-value="0"
               style="width: 100%"
+              v-model="type"
               @change="choseType"
             >
               <a-select-option
@@ -58,6 +60,7 @@
             <a-select
               :default-value="0"
               style="width: 100%"
+              v-model="price"
               @change="chosePrice"
             >
               <a-select-option
@@ -81,6 +84,7 @@
             <a-select
               :default-value="0"
               style="width: 100%"
+              v-model="area"
               @change="choseArea"
             >
               <a-select-option
@@ -119,6 +123,9 @@
 <script>
 import searchData from "~/api/searchList.json";
 export default {
+  props: {
+    cleanData: Boolean,
+  },
   data() {
     return {
       searchList: searchData.searchList,
@@ -161,7 +168,20 @@ export default {
         },
       ],
       optionSearch: {},
+      district: 0,
+      type: 0,
+      price: 0,
+      area: 0,
     };
+  },
+  watch: {
+    cleanData() {
+      this.district = 0;
+      this.type = 0;
+      this.price = 0;
+      this.area = 0;
+      this.optionSearch = {};
+    },
   },
   created() {
     this.fetchDistrict();
@@ -175,10 +195,40 @@ export default {
       this.optionSearch.type = val;
     },
     chosePrice(val) {
-      this.optionSearch.price = val;
+      if (val == 1) {
+        this.optionSearch.priceFrom = 0;
+        this.optionSearch.priceTo = 1000000;
+      }
+      if (val == 2) {
+        this.optionSearch.priceFrom = 1000000;
+        this.optionSearch.priceTo = 1500000;
+      }
+      if (val == 3) {
+        this.optionSearch.priceFrom = 1500000;
+        this.optionSearch.priceTo = 2000000;
+      }
+      if (val == 4) {
+        this.optionSearch.priceFrom = 2000000;
+        this.optionSearch.priceTo = 1000000000;
+      }
     },
     choseArea(val) {
-      this.optionSearch.area = val;
+      if (val == 1) {
+        this.optionSearch.areaFrom = 0;
+        this.optionSearch.areaTo = 10;
+      }
+      if (val == 2) {
+        this.optionSearch.areaFrom = 10;
+        this.optionSearch.areaTo = 15;
+      }
+      if (val == 3) {
+        this.optionSearch.areaFrom = 15;
+        this.optionSearch.areaTo = 20;
+      }
+      if (val == 4) {
+        this.optionSearch.areaFrom = 20;
+        this.optionSearch.areaTo = 1000;
+      }
     },
     fetchDistrict() {
       let url = "http://localhost:3008/api/district/list";
@@ -212,17 +262,16 @@ export default {
       };
       data.filter.district = this.optionSearch.district;
       data.filter.category = this.optionSearch.type;
-      data.filter.price = this.optionSearch.price;
-      data.filter.area = this.optionSearch.area;
-      console.log("get data ---", data);
-
+      data.filter.priceFrom = this.optionSearch.priceFrom;
+      data.filter.priceTo = this.optionSearch.priceTo;
+      data.filter.areaFrom = this.optionSearch.areaFrom;
+      data.filter.areaTo = this.optionSearch.areaTo;
       let url = "http://localhost:3008/api/motel/list";
       this.$axios
         .post(url, { data: data })
         .then((res) => {
           if (res.data.success) {
             this.$emit("search", res.data.data);
-            console.log("get res data ----", res.data);
           } else {
             console.log("get error ---", res.data.message);
             this.$emit("search", []);

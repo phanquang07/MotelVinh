@@ -1,6 +1,6 @@
 <template>
   <baseLayout>
-    <comp-filters @search="getSearch" />
+    <comp-filters :cleanData="cleanFilter" @search="getSearch" />
     <section class="motel-wrap">
       <a-row class="motel-base">
         <div class="grid wide">
@@ -271,11 +271,14 @@ export default {
         },
       ],
       newMotel: [],
+      cleanFilter: false,
       optionSearch: {
         district: "",
         type: "",
-        price: "",
-        area: "",
+        priceFrom: "",
+        priceTo: "",
+        areaFrom: "",
+        areaTo: "",
       },
     };
   },
@@ -290,6 +293,7 @@ export default {
     },
     reloadData() {
       this.fetch();
+      this.cleanFilter = !this.cleanFilter;
     },
     fetch() {
       let data = {
@@ -297,8 +301,10 @@ export default {
       };
       data.filter.district = this.optionSearch.district;
       data.filter.category = this.optionSearch.type;
-      data.filter.price = this.optionSearch.price;
-      data.filter.area = this.optionSearch.area;
+      data.filter.priceFrom = this.optionSearch.priceFrom;
+      data.filter.priceTo = this.optionSearch.priceTo;
+      data.filter.areaFrom = this.optionSearch.areaFrom;
+      data.filter.areaTo = this.optionSearch.areaTo;
       let url = "http://localhost:3008/api/motel/list";
       this.$axios
         .post(url, { data: data })
@@ -339,20 +345,51 @@ export default {
         });
     },
     getFilter(val, type) {
-      let data = {};
+      let data = {
+        filter: {},
+      };
       if (type === "district") {
         data.filter.district = val;
       }
       if (type === "type") {
         data.filter.category = val;
       }
-      // if (type === "price") {
-      //   this.optionSearch.price = val;
-      // }
-      // if (type === "area") {
-      //   this.optionSearch.area = val;
-      // }
-
+      if (type === "price") {
+        if (val == 1) {
+          data.filter.priceFrom = 0;
+          data.filter.priceTo = 1000000;
+        }
+        if (val == 2) {
+          data.filter.priceFrom = 1000000;
+          data.filter.priceTo = 1500000;
+        }
+        if (val == 3) {
+          data.filter.priceFrom = 1500000;
+          data.filter.priceTo = 2000000;
+        }
+        if (val == 4) {
+          data.filter.priceFrom = 2000000;
+          data.filter.priceTo = 1000000000;
+        }
+      }
+      if (type === "area") {
+        if (val == 1) {
+          data.filter.areaFrom = 0;
+          data.filter.areaTo = 10;
+        }
+        if (val == 2) {
+          data.filter.areaFrom = 10;
+          data.filter.areaTo = 15;
+        }
+        if (val == 3) {
+          data.filter.areaFrom = 15;
+          data.filter.areaTo = 20;
+        }
+        if (val == 4) {
+          data.filter.areaFrom = 20;
+          data.filter.areaTo = 1000;
+        }
+      }
       let url = "http://localhost:3008/api/motel/list";
       this.$axios
         .post(url, { data: data })
@@ -362,7 +399,6 @@ export default {
           } else {
             console.log("get error ---", res.data.message);
             this.list = [];
-            console.log("get list ---", this.list);
           }
         })
         .catch((err) => {

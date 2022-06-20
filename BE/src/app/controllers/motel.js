@@ -82,30 +82,19 @@ const motelCtr = {
           condition.district = filter.district;
         }
         // kiểm tra diện tích trong khoảng
-        if (filter.areaTo && filter.areaFrom) {
+        if (typeof filter.areaTo == "number" && typeof filter.areaFrom == "number") {
           condition.area = {
             $gte: Number(filter.areaFrom),
             $lte: Number(filter.areaTo),
           };
         }
         // kiểm tra giá tiền trong khoảng
-        if (filter.priceTo && filter.priceFrom) {
+        if (typeof filter.priceTo == "number" && typeof filter.priceFrom == "number") {
           condition.price = {
             $gte: Number(filter.priceFrom),
             $lte: Number(filter.priceTo),
           };
         }
-        // kiểm tra khoảng thời gian tạo
-        // if (filter.timeTo && filter.timeFrom) {
-        //   condition.created_time = {
-        //     $gte: filter.timeFrom,
-        //     $lte: filter.timeTo,
-        //   };
-        // }
-        // // kiểm tra hạn
-        // if (filter.approved != undefined) {
-        //   condition.approved = filter.approved;
-        // }
       }
       // Tìm bài viết theo điều kiện
       const list = await motelModel
