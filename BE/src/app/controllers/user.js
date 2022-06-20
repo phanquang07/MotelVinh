@@ -7,9 +7,8 @@ const UserController = {
     try {
       const data = req.body;
       // hash mật khẩu
-      const find = await userModel.findOne({email: data.email})
-      if(find) 
-        return res.status(500).send({success: false, message: "Email đã tồn tại!"})
+      const find = await userModel.findOne({ email: data.email });
+      if (find) return res.status(500).send({ success: false, message: "Email đã tồn tại!" });
       const hashPassword = await bcrypt.hash(data.password, 12);
       data.password = hashPassword;
       const newUser = await userModel.create(data);
@@ -30,16 +29,10 @@ const UserController = {
       const data = req.body;
       const user = await userModel.findOne({ email: data.email });
       // tìm người dùng
-      if (!user)
-        return res
-          .status(500)
-          .send({ success: false, message: "Không tìm thấy" });
+      if (!user) return res.status(500).send({ success: false, message: "Không tìm thấy" });
       const checkPass = await bcrypt.compareSync(data.password, user.password); // true
       // Kiểm tra mật khẩu
-      if (!checkPass)
-        return res
-          .status(500)
-          .send({ success: false, message: "Mật khẩu chưa đúng" });
+      if (!checkPass) return res.status(500).send({ success: false, message: "Mật khẩu chưa đúng" });
       // Tạo token
       const token = createAccessToken({
         id: user._id,
@@ -54,7 +47,7 @@ const UserController = {
   },
   list: async (req, res) => {
     try {
-      const list = await userModel.find({}).sort({created_time: -1});
+      const list = await userModel.find({}).sort({ created_time: -1 });
       // Đếm để phân trang
       const count = await userModel.countDocuments();
       return res.send({ success: true, data: list, count });
@@ -66,14 +59,10 @@ const UserController = {
   get: async (req, res) => {
     try {
       const id = req.params.id;
-      if (!id)
-        return res.status(500).send({ success: false, message: "Không có id" });
+      if (!id) return res.status(500).send({ success: false, message: "Không có id" });
       // Tìm user
       const user = await userModel.findOne({ _id: id }).select("-password");
-      if (!user)
-        return res
-          .status(500)
-          .send({ success: false, message: "Không tồn tại user" });
+      if (!user) return res.status(500).send({ success: false, message: "Không tồn tại user" });
       return res.send({ success: true, data: user });
     } catch (error) {
       return res.status(500).json({ success: false, message: error.message });
@@ -82,8 +71,7 @@ const UserController = {
   delete: async (req, res) => {
     try {
       const id = req.params.id;
-      if (!id)
-        return res.status(500).send({ success: false, message: "Không có id" });
+      if (!id) return res.status(500).send({ success: false, message: "Không có id" });
       const rs = await userModel.findOneAndDelete({ _id: id });
       return res.send({ success: true, message: "Xoá user thành công" });
     } catch (error) {
@@ -93,18 +81,14 @@ const UserController = {
   update: async (req, res) => {
     try {
       const id = req.params.id;
-      if (!id)
-        return res.status(500).send({ success: false, message: "Không có id" });
-      const data = req.body;
+      if (!id) return res.status(500).send({ success: false, message: "Không có id" });
+      const data = req.body.data;
       if (data.password) {
         const hashPassword = await bcrypt.hash(data.password, 12);
         data.password = hashPassword;
       }
       const rs = await userModel.findByIdAndUpdate(id, data, { new: true });
-      if (!rs)
-        return res
-          .status(500)
-          .send({ success: false, message: "Cập nhật không thành công" });
+      if (!rs) return res.status(500).send({ success: false, message: "Cập nhật không thành công" });
       return res.send({
         success: true,
         message: "Cập nhập thành công",

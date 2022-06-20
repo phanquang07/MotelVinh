@@ -92,18 +92,12 @@ export default {
       e.preventDefault();
       this.form.validateFieldsAndScroll((err, values) => {
         if (!err) {
-          console.log("Received values of form: ", values);
           let url = "http://localhost:3008/api/user/login";
           this.$axios
             .post(url, values)
             .then((res) => {
               if (res.data.success) {
-                console.log("get res data ----", res.data);
-                this.$notify({
-                  type: "success",
-                  title: "Thành công !",
-                  text: "Đăng nhập thành công !",
-                });
+                localStorage.setItem("role", res.data.data.role);
                 localStorage.setItem("motel-token", res.data.token);
                 res.data.data.isLogin = true;
                 this.setLogin(res.data.data);

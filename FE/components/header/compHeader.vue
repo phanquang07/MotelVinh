@@ -43,20 +43,16 @@
               </li>
             </ul>
           </a-col>
-          <a-col
-            v-if="this.$store.state.isLogin"
-            :lg="6"
-            :md="6"
-            class="post"          >
-            <nuxt-link to="/post/create" class="post-item-link link"
-              >Đăng tin</nuxt-link
-            >
+          <a-col v-if="this.$store.state.isLogin" :lg="6" :md="6" class="post">
+            <nuxt-link to="/post/create" class="post-item-link link">
+              Đăng tin
+            </nuxt-link>
             <a href="#" class="post-item-link link" @click="handleLogout"
-              >Đăng xuất</a
-            >
-            <nuxt-link to="/admin" class="post-item-link link"
-              >Quản trị</nuxt-link
-            >
+              >Đăng xuất
+            </a>
+            <nuxt-link v-if="role == 1" to="/admin" class="post-item-link link">
+              Quản trị
+            </nuxt-link>
           </a-col>
         </div>
       </a-row>
@@ -71,12 +67,19 @@ export default {
     return {
       // navbar
       navList: navData.navList,
+      role: 2,
     };
+  },
+  mounted() {
+    this.checkRole();
   },
   methods: {
     ...mapMutations(["setLogin"]),
     handleButtonClick(e) {
       console.log("click left button", e);
+    },
+    checkRole() {
+      this.role = localStorage.getItem("role");
     },
     handleMenuClick(e) {
       console.log("click", e);

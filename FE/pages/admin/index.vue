@@ -18,7 +18,7 @@
         </div>
       </div>
     </div>
-    <div class="admin-body">
+    <div class="admin-body" v-if="role == 1">
       <div class="grid wide">
         <User v-if="headActive.user" />
         <Address v-if="headActive.address" />
@@ -65,7 +65,11 @@ export default {
         post: false,
         address: false,
       },
+      role: 2,
     };
+  },
+  mounted() {
+    this.checkRole();
   },
   methods: {
     handleActive(key) {
@@ -78,6 +82,9 @@ export default {
     },
     backHome() {
       this.$router.push("/");
+    },
+    checkRole() {
+      this.role = localStorage.getItem("role");
     },
   },
 };
