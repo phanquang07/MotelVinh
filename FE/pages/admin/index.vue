@@ -73,9 +73,7 @@ export default {
   },
   methods: {
     handleActive(key) {
-      console.log("key active", key);
       for (let h in this.headActive) {
-        console.log("h", h);
         this.headActive[h] = false;
       }
       this.headActive[key] = true;

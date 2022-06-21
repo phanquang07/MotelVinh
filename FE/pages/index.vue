@@ -145,13 +145,13 @@
                   <a-col
                     :xs="12"
                     class="motel-filter-item-inner-left"
-                    v-for="item in listPrice"
-                    :key="item._id"
+                    v-for="(item, idx) in listPrice"
+                    :key="idx"
                   >
                     <a
                       href="#"
                       class="motel-filter-item block"
-                      @click="getFilter(item._id, 'price')"
+                      @click="getFilter(idx + 1, 'price')"
                     >
                       <i class="fas fa-angle-right"></i>
                       {{ item.name }}
@@ -170,13 +170,13 @@
                   <a-col
                     :xs="12"
                     class="motel-filter-item-inner-left"
-                    v-for="item in listArea"
-                    :key="item._id"
+                    v-for="(item, idx) in listArea"
+                    :key="idx"
                   >
                     <a
                       href="#"
                       class="motel-filter-item block"
-                      @click="getFilter(item._id, 'area')"
+                      @click="getFilter(idx + 1, 'area')"
                     >
                       <i class="fas fa-angle-right"></i>
                       {{ item.name }}
@@ -197,14 +197,13 @@
                   v-for="item in newMotel"
                   :key="item._id"
                 >
-                  <a
-                    href="#"
-                    class="motel-filter-item block"
-                    @click="getFilter(item._id, 'area')"
+                  <nuxt-link
+                    :to="`/motel_details/${item._id}`"
+                    class="motel-item-title-link link"
                   >
                     <i class="fas fa-angle-right"></i>
                     {{ item.title }}
-                  </a>
+                  </nuxt-link>
                 </a-col>
               </a-row>
             </div>

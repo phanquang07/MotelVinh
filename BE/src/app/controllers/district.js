@@ -34,7 +34,7 @@ const districtController = {
             const data = req.body
             const id = req.params.id
             if (!id) return res.status(500).send({ success: false, message: "Không có id" });
-            const update = await CATEGORIES.findByIdAndUpdate(id, data, {new: true})
+            const update = await districtModel.findByIdAndUpdate(id, data, {new: true})
             if(!update)
                 return res.status(500).send({success: false, message: "Sửa thất bại"})
             return res.send({success: true, message: "Sửa thành công", data: update})

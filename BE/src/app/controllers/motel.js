@@ -161,7 +161,7 @@ const motelCtr = {
   },
   update: async (req, res) => {
     try {
-      const data = req.body;
+      const data = req.body.data;
       const id = req.params.id;
       if (!id) return res.status(500).send({ success: false, message: "Không có id" });
       const rs = await motelModel.findByIdAndUpdate(id, data, { new: true });

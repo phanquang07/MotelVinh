@@ -25,14 +25,41 @@
           <td>{{ item.name }}</td>
           <td>{{ new Date(item.created_time).toLocaleString() }}</td>
           <td>
-            <a href="#" class="text-warning">Sửa</a> /
-            <a href="#" class="text-danger" @click="handleDelete(item._id)"
-              >Xoá</a
-            >
+            <a href="#" class="text-warning" @click="showModal(item._id)">
+              Sửa
+            </a>
+            /
+            <a href="#" class="text-danger" @click="handleDelete(item._id)">
+              Xoá
+            </a>
           </td>
         </tr>
       </tbody>
     </table>
+    <!-- modal -->
+    <a-modal
+      title="Chỉnh sửa thông tin loại phòng"
+      :visible="visible"
+      @cancel="handleCancel"
+    >
+      <div class="">
+        <div class="list-info">
+          <label for="">Tên địa điểm</label>
+          <a-input placeholder="Tên địa điểm" v-model="nameDistrict" />
+        </div>
+      </div>
+      <template slot="footer">
+        <a-button key="back" @click="handleCancel"> Hủy </a-button>
+        <a-button
+          key="submit"
+          type="primary"
+          :loading="loading"
+          @click="handleOk"
+        >
+          Lưu
+        </a-button>
+      </template>
+    </a-modal>
   </div>
 </template>
 <script>
@@ -41,6 +68,10 @@ export default {
     return {
       name: "",
       list: [],
+      visible: false,
+      loading: false,
+      districtInfo: {},
+      nameDistrict: "",
     };
   },
   mounted() {
@@ -83,6 +114,53 @@ export default {
         .then((res) => {
           if (res.data.success) {
             this.fetch();
+          }
+        })
+        .catch((err) => {
+          console.log(err.response);
+        });
+    },
+    showModal(id) {
+      this.visible = true;
+      this.list = this.list.filter((item) => {
+        return item._id == id;
+      });
+      this.districtInfo = this.list[0];
+      this.nameDistrict = this.districtInfo.name;
+    },
+    handleCancel(e) {
+      this.visible = false;
+      this.districtInfo = {};
+      this.nameDistrict = "";
+      this.fetch();
+    },
+    handleOk(e) {
+      this.loading = true;
+      let data = {};
+      data.name = this.nameDistrict;
+      let url =
+        "http://localhost:3008/api/district/update/" + this.districtInfo._id;
+      this.$axios
+        .post(url, data)
+        .then((res) => {
+          if (res.data.success) {
+            this.loading = false;
+            this.visible = false;
+            this.fetch();
+            this.$notify({
+              type: "success",
+              title: "Thông báo",
+              text: "Cập nhật thông tin địa điểm thành công !",
+            });
+            this.districtInfo = {};
+            this.nameDistrict = "";
+          } else {
+            this.visible = true;
+            this.$notify({
+              type: "error",
+              title: "Thông báo",
+              text: res.data.message,
+            });
           }
         })
         .catch((err) => {
