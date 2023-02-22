@@ -34,6 +34,7 @@
         </p>
         <p><strong>Giá: </strong> {{ post.price }} đ</p>
         <p><strong>Diện tích: </strong> {{ post.area }} m2</p>
+        <p><a href="tel:0987654321"><strong>Số ĐT: </strong>{{post.phone}}</a></p>
         <h5><strong>Mô tả</strong></h5>
         <p>{{ post.descriptions }}</p>
       </div>
